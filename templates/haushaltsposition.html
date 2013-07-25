@@ -1,0 +1,103 @@
+{% extends "layout.html" %}
+{#% set active_page = "sektor" %#}
+{% block title %}Sektoren{% endblock %}
+
+{% block body %}
+
+<div class="row spaceheader">
+<div class="large-7 small-12 five columns">
+  <h1>{{ info.produktgruppe_bez }}</h1>
+  <p class="breadcrumb">{{ info.fachdienst }}</p>
+</div>
+<div class="large-5 small-12 small-centered seven columns">
+  <ul class="years pull-right">
+    {% for jahr in years %}
+    {% if loop.index < 4 %}
+    <li {% if jahr.jahr == info.jahr %} class="active"{% endif %}><a href="{{ url_for('show_haushaltsposition', year=jahr.jahr, flow=info.flow, produkt=info.produkt) }}">{{ jahr.jahr }}</a> </li>
+    {% endif %}
+    {% endfor %}
+  </ul>
+</div>
+</div>
+<div class="row spaceheader spacebottom">
+<div class="large-8 small-12 eight columns">
+  <h2>
+    {% if info.flow == 'A' %}
+  Ausgaben
+  {% else %}
+  Einnahmen
+  {% endif %}
+  - {{ info.jahr }}
+  </h2>
+</div>
+<div class="large-4 small-12 small-centered four columns">
+  <ul class="years pull-right">
+    {% if einnahmen['main_value'] != None  %}
+    {% if einnahmen['main_value'] != 0 %}
+    <li  {% if info.flow  == 'E' %} class="active"{% endif %}><a href="{{ url_for('show_haushaltsposition', year=info.jahr, flow='E', produkt=info.produkt) }}">Einnahmen</a> </li>
+    {% endif %}
+    {% endif %}
+    {% if info['main_value'] != None %}
+    {% if info['main_value'] != 0 %}
+    <li  {% if info.flow  == 'A' %} class="active"{% endif %}><a href="{{ url_for('show_haushaltsposition', year=info.jahr, flow='A', produkt=info.produkt) }}">Ausgaben</a> </li>
+    {% endif %}
+    {% endif %}
+  </ul>
+</div>
+</div>
+<div class="row">
+<div class="large-9 small-12 nine columns">
+  <div id="mainvis" style="width: auto; height: 320px;"> </div>
+</div>
+<div class="large-3 three columns">
+  {% include 'macro/highlight_box.html' %}
+</div>
+</div>
+<div class="row spacetop spacebottom">
+<div class="large-9 columns">
+  <h2>Tabellenübersicht</h2>
+</div>
+<div class="large-3 columns hide-for-small">
+  {% include 'macro/download.html' %}
+</div>
+</div>
+<div class="row">
+<div class="large-12 twelve columns">
+  <table width="100%">
+    <thead>
+    <tr>
+      <th width="500">Sektor</th>
+      <th width="100">EURO {{ info.jahr }}</th>
+      <th width="100">Anteil</th>
+      {% if info.jahr  != 2011 %}<th width="100">Vorjahr +/-</th>{% endif %}
+    </tr>
+    </thead>
+     <tbody>
+    {% for entry in entries %}
+    <tr class="{{ loop.cycle('odd', 'even') }}">
+      {% set rowloop = loop %}
+      <td class="first">{{ entry['title'] }}</td>
+      <td>{{ entry['main_value']|number_trunc()|number_format }}</td>
+      <td>{% if entry['anteil'] %}{{ entry['anteil']|number_anteil }} {% else %} 0 %{% endif %}</td>
+      {% if info.jahr  != 2011 %}<td {% if entry.prozent  <= 0 %} class="minus"> {% else %} class="plus"> +{% endif %} {{ entry['prozent']|float|round(2,'common') }} %</td>{% endif %}
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+</div>
+{% include 'macro/openspending.html' %}
+<script>
+$(document).ready(function() {
+OpenSpending.DatasetPage.init({
+treemapData: {"children": [
+  {% for entry in entries %}
+{"data": {"title": "{{ entry.title }}", "$area": {% if entry['anteil'] %}{{ entry['anteil']|number_anteil }} {% else %} 0 {% endif %}, "$color": "{% if loop.first == True %}#4F0000{% else %}{{ entry.color }}{% endif %}", "value": "{{ entry.main_value }}", "printable_value": "{{ entry.main_value|number_trunc()|number_format }} EURO", "link": "", "show_title": {{ entry.show }}}, "children": [], "name": "{{ entry.title }}", "id": "{{ entry.id }}"}{% if loop.last == False %},{% endif %}
+  {% endfor %}
+  ]}
+});
+});
+</script>
+{% endblock %}
+
+

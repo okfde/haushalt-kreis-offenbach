@@ -1,0 +1,29 @@
+<div class="highlight-box">
+	<div class="jahr centered">	{{ info['jahr'] }}</div>
+	<div class="panel highlight">
+		<div class="header-box">
+			{{ info['main_value']|number_trunc()|number_format }} €
+		</div>
+		<div class="subheader-box">Ausgaben</div>
+	</div>
+	<div class="panel highlight">
+		<div class="header-box">
+			{% if einnahmen['main_value'] == None %}
+					0
+			{% else %}
+			{{ einnahmen['main_value']|number_trunc()|number_format }} €
+			{% endif %}
+		</div>
+		<div class="subheader-box">Einnahmen</div>
+	</div>
+	<div class="panel highlight">
+		<div class="header-box">
+			{% if einnahmen['main_value'] == None %}
+			- {{ info['main_value']|number_trunc()|number_format}} €
+			{% else %}
+			{{ (einnahmen['main_value'] - info['main_value'])|number_trunc()|number_format}} €
+			{% endif %} 
+		</div>
+		<div class="subheader-box">Einnahmen minus Ausgaben</div>
+	</div>
+</div>

@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="de"><!--[if lt IE 9]><html class="lt-ie9"><![endif]-->
+	<head>
+		<meta charset="utf-8" />
+		<meta name=viewport content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
+		<title>Offener Haushalt Kreis Offenbach | {% block title %}{% endblock %}
+		</title>
+		<!--[if lt IE 9]>
+		<script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<!-- Foundation 3 for IE 8 -->
+		<!--[if IE 8]>
+			<link rel="stylesheet" href="{{ url_for('static', filename='css/foundation3/foundation.min.css') }}">
+			<link rel="stylesheet" href="{{ url_for('static', filename='css/foundation3/normalize.css') }}">
+		<![endif]-->
+		<!-- Foundation 4 for IE 9 and earlier -->
+		<!--[if gt IE 8]><!-->
+			<link rel="stylesheet" href="{{ url_for('static', filename='css/foundation4/normalize.css') }}">
+			<link rel="stylesheet" href="{{ url_for('static', filename='css/foundation4/foundation.min.css') }}">
+		<!--<![endif]-->
+
+		<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/custom.css') }}">
+		<script type=text/javascript src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	</head>
+	<body>
+		<nav class="top-bar">
+			<ul class="title-area">
+				<li class="name"><h1><a href="/">Kreis Offenbach</a></h1></li>
+				<li class="toggle-topbar menu-icon"><a href="#"><span>Navigation</span></a></li>
+			</ul>
+			<section class="top-bar-section">
+				<ul class="left">
+					<li class="divider"></li>
+					<li><a href="/">Start</a></li>
+					<li class="divider"></li>
+					<li class="has-dropdown"><a href="#">Fachdienste A-I</a>
+						<ul class="dropdown">
+							{% for sektor in sektoren %}
+							{% if loop.index < 14 %}
+							<li><a href="/produktgruppe/A/{{ sektor.produktbereich }}/{{ info.jahr }}">{{ sektor.fachdienst }}</a></li>
+							{% endif %}
+							{% endfor %}
+						</ul>
+					</li>
+					<li class="divider"></li>
+					<li class="has-dropdown"><a href="#">Fachdienste J-Z</a>
+						<ul class="dropdown">
+							{% for sektor in sektoren %}
+							{% if loop.index > 14 %}
+							{% if sektor.fachdienst != 'Recht' %}
+							<li><a href="/produktgruppe/A/{{ sektor.produktbereich }}/{{ info.jahr }}">{{ sektor.fachdienst }}</a></li>
+							{% endif %}
+							{% endif %}
+							{% endfor %}
+						</ul>
+					</li>
+					<li class="divider"></li>
+				</ul>
+			</section>
+			</nav>
+			<div class="row main">
+				<div class="large-12 twelve columns">
+				<div class="row header">
+					<div class="large-9 small-11 nine columns">
+						<div id="site-title"><a href="/">Haushalt Kreis Offenbach</a></div>
+						<div id="slogan">Der Haushalt zum analysieren und recherchieren</div>
+					</div>
+					<div class="large-3 small-1 three columns logo">
+						<div id="logo" class="hide-for-small"></div>
+						<a href="http://www.kreis-offenbach.de/" target="_blank">www.kreis-offenbach.de</a>
+					</div>
+				</div>
+				<div class="row spacetop">
+					<div class="large-12 twelve columns">
+						{% block body %}{% endblock %}
+					</div>
+				</div>
+			</div>
+		</div>
+				<div class="row footer">
+					<div class="large-4 four columns">
+						<a href="http://www.kreis-offenbach.de/index.phtml?mNavID=1856.172&sNavID=1856.3&La=1">Impressum</a>
+					</div>
+					<div class="large-5 offset-by-3 three columns">
+						Dies ist eine Webseite des Kreises Offenbach.
+					</div>
+				</div>
+		<script src="{{ url_for('static', filename='js/custom.modernizr.js') }}"></script>
+		<!-- Foundation 3 for IE 8 -->
+		<!--[if IE 8]>
+		    <script src="{{ url_for('static', filename='js/foundation3/foundation.min.js') }}"></script>
+		    <script src="{{ url_for('static', filename='js/foundation3/app.js') }}"></script>
+		<![endif]-->
+
+		<!-- Foundation 4 for IE 9 and later -->
+		<!--[if gt IE 8]><!-->
+		    <script src="{{ url_for('static', filename='js/foundation.min.js') }}"></script>
+		    <script>
+		        $(document).foundation();
+		    </script>
+		<!--<![endif]-->
+		</body>
+	</html>
