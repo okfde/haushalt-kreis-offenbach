@@ -184,10 +184,10 @@ def show_haushaltsposition(flow, produkt, year):
     entries.append(t)
 
   return render_template('haushaltsposition.html', sektoren=get_sektoren(), entries=entries, info=info, einnahmen=einnahmen, years=get_years())
-  
+
 @app.route('/hinweis/')
 def show_hinweis(): 
-  return render_template('hinweis.html')
+  return render_template('hinweis.html', sektoren=get_sektoren())
 
 # @app.errorhandler(404)
 # def page_not_found(error):

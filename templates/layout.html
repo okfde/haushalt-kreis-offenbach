@@ -34,9 +34,16 @@
 					<li class="divider"></li>
 					<li class="has-dropdown"><a href="#">Fachdienste A-I</a>
 						<ul class="dropdown">
+							{% if active_page == 'start' %}
+							{% set relative_path = '../../'%}
+							{% elif active_page == 'hinweis' %}
+							{% set relative_path = '../'%}
+							{% else %}
+							{% set relative_path = '../../../../'%}
+							{% endif %}
 							{% for sektor in sektoren %}
-							{% if loop.index < 14 %}
-							<li><a href="{{ url_for('show_produktgruppe', year=info.jahr, flow=info.flow, produkt=sektor.produktbereich) }}">{{ sektor.fachdienst }}</a></li>
+							{% if loop.index < 15 %}
+							<li><a href="{{ relative_path }}produktgruppe/A/{{sektor.produktbereich}}/2012/index.html">{{ sektor.fachdienst }}</a></li>
 							{% endif %}
 							{% endfor %}
 						</ul>
@@ -47,7 +54,7 @@
 							{% for sektor in sektoren %}
 							{% if loop.index > 14 %}
 							{% if sektor.fachdienst != 'Recht' %}
-							<li><a href="{{ url_for('show_produktgruppe', year=info.jahr, flow=info.flow, produkt=sektor.produktbereich) }}">{{ sektor.fachdienst }}</a></li>
+							<li><a href="{{ relative_path }}produktgruppe/A/{{sektor.produktbereich}}/2012/index.html">{{ sektor.fachdienst }}</a></li>
 							{% endif %}
 							{% endif %}
 							{% endfor %}
