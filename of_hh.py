@@ -7,16 +7,13 @@ from contextlib import closing
 import re
 
 # configuration
-DATABASE = 'HH-Kreis-Offenbach.sqlite'
-DEBUG = True
-SECRET_KEY = 'development key'
-USERNAME = 'admin'
-PASSWORD = 'default'
-FREEZER_RELATIVE_URLS = True
 
 # create our little application :)
 app = Flask(__name__)
-app.config.from_object(__name__)
+# app.config.from_object(__name__)
+app.config['FREEZER_RELATIVE_URLS'] = True
+app.config['DEBUG'] = True
+app.config['DATABASE'] = 'HH-Kreis-Offenbach.sqlite'
 
 def connect_db():
   return sqlite3.connect(app.config['DATABASE'])
@@ -130,6 +127,11 @@ def show_gesamt(flow, year):
 @app.route('/produktgruppe/<flow>/<produkt>/<year>/')
 def show_produktgruppe(flow, produkt, year):
 
+  file = open('log.txt', 'a')
+  input = produkt + ": " + year + " " + flow + "\n\n"
+  file.write(input)
+  file.close()
+
   info = query_db('select sum(euro) as main_value, jahr, fachdienst, haushalt.produktbereich, E_A from haushalt join fachdienste on haushalt.produktbereich = fachdienste.produktbereich where haushalt.produktbereich = ? and jahr = ? and E_A = ?', [produkt, year, flow], one=True)
   total = info['main_value']
   info['flow'] = flow
@@ -163,11 +165,6 @@ def show_produktgruppe(flow, produkt, year):
 @app.route('/haushaltsposition/<flow>/<produkt>/<year>/')
 def show_haushaltsposition(flow, produkt, year):
 
-  #file = open('log.txt', 'a')
-  #input = produkt + ": " + year + " " + flow + "\n\n"
-  #file.write(input)
-  #file.close()
-
   info = query_db('select sum(euro) as main_value, jahr, produkt, fachdienst, haushalt.produktgruppe_bez, E_A from haushalt join fachdienste on haushalt.produktbereich = fachdienste.produktbereich where haushalt.produkt = ? and jahr = ? and E_A = ?', [produkt, year, flow], one=True)
   total = info['main_value']
   info['flow'] = flow
@@ -187,7 +184,10 @@ def show_haushaltsposition(flow, produkt, year):
     entries.append(t)
 
   return render_template('haushaltsposition.html', sektoren=get_sektoren(), entries=entries, info=info, einnahmen=einnahmen, years=get_years())
-
+  
+@app.route('/hinweis/')
+def show_hinweis(): 
+  return render_template('hinweis.html')
 
 # @app.errorhandler(404)
 # def page_not_found(error):
