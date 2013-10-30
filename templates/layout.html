@@ -25,18 +25,18 @@
 	<body>
 		<nav class="top-bar">
 			<ul class="title-area">
-				<li class="name"><h1><a href="/">Kreis Offenbach</a></h1></li>
+				<li class="name"><h1><a href="http://www.kreis-offenbach.de">Kreis Offenbach</a></h1></li>
 				<li class="toggle-topbar menu-icon"><a href="#"><span>Navigation</span></a></li>
 			</ul>
 			<section class="top-bar-section">
 				<ul class="left">
 					<li class="divider"></li>
-					<li><a href="/">Start</a></li>
+					<li><a href="http://haushalt.kreis-offenbach.de">Start</a></li>
 					<li class="divider"></li>
 					<li class="has-dropdown"><a href="#">Fachdienste A-I</a>
 						<ul class="dropdown">
 							{% if active_page == 'start' %}
-							{% set relative_path = '../../'%}
+							{% set relative_path = '../../../'%}
 							{% elif active_page == 'hinweis' %}
 							{% set relative_path = '../'%}
 							{% else %}
@@ -44,7 +44,7 @@
 							{% endif %}
 							{% for sektor in sektoren %}
 							{% if loop.index < 15 %}
-							<li><a href="{{ relative_path }}produktgruppe/A/{{sektor.produktbereich}}/2012/index.html">{{ sektor.fachdienst }}</a></li>
+							<li><a href="{{ relative_path }}produktgruppe/A/{{sektor.produktbereich}}/2012/">{{ sektor.fachdienst }}</a></li>
 							{% endif %}
 							{% endfor %}
 						</ul>
@@ -55,7 +55,7 @@
 							{% for sektor in sektoren %}
 							{% if loop.index > 14 %}
 							{% if sektor.fachdienst != 'Recht' %}
-							<li><a href="{{ relative_path }}produktgruppe/A/{{sektor.produktbereich}}/2012/index.html">{{ sektor.fachdienst }}</a></li>
+							<li><a href="{{ relative_path }}produktgruppe/A/{{sektor.produktbereich}}/2012/">{{ sektor.fachdienst }}</a></li>
 							{% endif %}
 							{% endif %}
 							{% endfor %}
