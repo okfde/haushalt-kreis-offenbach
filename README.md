@@ -11,3 +11,6 @@ and to render all of the website files (Frozen-Flask) completely, which can then
 to any web server. The interactive part then is done at the client side by Javascript thanks 
 to the openspending project. 
 
+
+License
+Offener Haushalt Kreis Offenbach is licensed under the MIT License.
