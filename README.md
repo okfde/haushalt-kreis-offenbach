@@ -12,5 +12,6 @@ to any web server. The interactive part then is done at the client side by Javas
 to the openspending project. 
 
 
-License
+## License
+
 Offener Haushalt Kreis Offenbach is licensed under the MIT License.
